@@ -16,10 +16,58 @@ public class Game extends Observable {
 
     private int[][] solution;       // Generated solution.
     private int[][] game;           // Generated game with user input.
+    private int[][] reset;
     private final boolean[][] submit;      // Holder for checking validity of game.
     private int selectedNumber, addHint;     // Selected number by user.
-    private boolean help;           // Help turned on or off.
     private int level, steps;
+    private int milliseconds;
+    private int seconds;
+    private int minutes;
+    private int hours;
+
+    public boolean[][] getSubmit() {
+        return submit;
+    }
+
+    public int getMilliseconds() {
+        return milliseconds;
+    }
+
+    public void setMilliseconds(int milliseconds) {
+        this.milliseconds = milliseconds;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int[][] getReset() {
+        return reset;
+    }
+
+    public void setReset(int[][] reset) {
+        this.reset = reset;
+    }
 
     /**
      * Constructor
@@ -28,7 +76,11 @@ public class Game extends Observable {
         level = 70;
         newGame();
         submit = new boolean[9][9];
-        help = false;
+        timer();
+        milliseconds = 0;
+        seconds = 0;
+        minutes = 0;
+        hours = 0;
     }
 
     public int getLevel() {
@@ -40,10 +92,6 @@ public class Game extends Observable {
     }
 
     public int getSteps() {
-        if (isHelp()) {
-            steps += 10;
-            return steps;
-        }
         return ++steps;
     }
 
@@ -54,6 +102,10 @@ public class Game extends Observable {
 
     public void setSteps(int steps) {
         this.steps = steps;
+    }
+
+    public int resetSteps() {
+        return steps = 0;
     }
 
     public int[][] getGame() {
@@ -81,12 +133,22 @@ public class Game extends Observable {
     }
 
     /**
-     * Generates a new Sudoku game.<br />
-     * All observers will be notified, update action: new game.
+     * Generates a new Sudoku game. All observers will be notified, update
+     * action: new game.
      */
     public final void newGame() {
         solution = generateSolution(new int[9][9], 0);
         game = generateGame(copy(solution));
+        reset = copy(game);
+        setChanged();
+        notifyObservers(UpdateAction.NEW_GAME);
+        setSteps(0);
+    }
+
+    /**
+     * Reset Sudoku Game
+     */
+    public void resetGame() {
         setChanged();
         notifyObservers(UpdateAction.NEW_GAME);
         setSteps(0);
@@ -94,8 +156,7 @@ public class Game extends Observable {
     }
 
     /**
-     * Checks user input agains the solution and puts it into a check
-     * matrix.<br />
+     * Checks user input agains the solution and puts it into a check matrix.
      * All observers will be notified, update action: check.
      */
     public void checkGame() {
@@ -103,23 +164,10 @@ public class Game extends Observable {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 submit[y][x] = game[y][x] == solution[y][x];
-                System.out.println(submit[y][x]);
             }
         }
         setChanged();
         notifyObservers(UpdateAction.CHECK);
-    }
-
-    /**
-     * Sets help turned on or off.<br />
-     * All observers will be notified, update action: help.
-     *
-     * @param help True for help on, false for help off.
-     */
-    public void setHelp(boolean help) {
-        this.help = help;
-        setChanged();
-        notifyObservers(UpdateAction.HELP);
     }
 
     /**
@@ -141,15 +189,6 @@ public class Game extends Observable {
      */
     public int getSelectedNumber() {
         return selectedNumber;
-    }
-
-    /**
-     * Returns whether help is turned on or off.
-     *
-     * @return True if help is turned on, false if help is turned off.
-     */
-    public boolean isHelp() {
-        return help;
     }
 
     /**
@@ -184,6 +223,17 @@ public class Game extends Observable {
      * @return Number of given position.
      */
     public int getNumber(int x, int y) {
+        return game[y][x];
+    }
+
+    /**
+     *
+     * @param x X position in game.
+     * @param y Y position in game.
+     * @return Number of given position.
+     */
+    public int getNumberReset(int x, int y) {
+        game[y][x] = reset[y][x];
         return game[y][x];
     }
 
@@ -290,7 +340,7 @@ public class Game extends Observable {
         int x = index % 9;
         int y = index / 9;
 
-        List<Integer> numbers = new ArrayList<Integer>();
+        List<Integer> numbers = new ArrayList<>();
         for (int i = 1; i <= 9; i++) {
             numbers.add(i);
         }
@@ -320,7 +370,7 @@ public class Game extends Observable {
      * @return Generated Sudoku game.
      */
     private int[][] generateGame(int[][] game) {
-        List<Integer> positions = new ArrayList<Integer>();
+        List<Integer> positions = new ArrayList<>();
         for (int i = 0; i < 81; i++) {
             positions.add(i);
         }
@@ -383,7 +433,7 @@ public class Game extends Observable {
         int y = index / 9;
 
         if (game[y][x] == 0) {
-            List<Integer> numbers = new ArrayList<Integer>();
+            List<Integer> numbers = new ArrayList<>();
             for (int i = 1; i <= 9; i++) {
                 numbers.add(i);
             }
@@ -428,7 +478,7 @@ public class Game extends Observable {
      * Prints given game to console. Used for debug.
      *
      * @param game  Game to be printed.
-     */
+     
     private void print(int[][] game) {
         System.out.println();
         for (int y = 0; y < 9; y++) {
@@ -437,19 +487,35 @@ public class Game extends Observable {
             }
             System.out.println();
         }
+    }*/
+    /**
+     * For Timer
+     */
+    public final void timer() {
+        Thread time = new Thread() {
+            @Override
+            public void run() {
+                for (;;) {
+                    try {
+                        sleep(1);
+                        if (milliseconds >= 999) {
+                            milliseconds = 0;
+                            seconds++;
+                        }
+                        if (seconds >= 59) {
+                            seconds = 0;
+                            minutes++;
+                        }
+                        if (minutes >= 59) {
+                            minutes = 0;
+                            hours++;
+                        }
+                        milliseconds++;
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+        };
+        time.start();
     }
-
-//    public void setHint2() {
-//        for (int y = 0; y < 9; y++) {
-//            for (int x = 0; x < 9; x++) {
-//                if (getNumber(x, y) == 0) {
-//                    setNumber(x, y, getSolution()[y][x]);
-//                    setSteps(getSteps() + 50);
-//                    setChanged();
-//                    notifyObservers(UpdateAction.HELP2);
-//                    return;
-//                }
-//            }
-//        }
-//    }
 }

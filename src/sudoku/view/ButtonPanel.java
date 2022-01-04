@@ -3,13 +3,13 @@ package sudoku.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import static java.lang.Thread.sleep;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -25,11 +25,10 @@ import sudoku.model.UpdateAction;
 public class ButtonPanel extends JPanel implements Observer {
 
     private final JButton btnNew, btnCheck, btnExit, cbHelp2;   // Used buttons.
-//    private final JCheckBox cbHelp;               // Used check box.
     private ButtonGroup bgNumbers;          // Group for grouping the toggle buttons.
     private final JToggleButton[] btnNumbers, btnLevels;            // Used JToggleButton
     private JLabel labelSteps;
-    private final Field[][] fields;       // Array of fields.
+    private final JLabel labelTimer;
 
     public JLabel getLabelSteps() {
         return labelSteps;
@@ -44,16 +43,18 @@ public class ButtonPanel extends JPanel implements Observer {
      */
     public ButtonPanel() {
         super(new BorderLayout());
-        
-        fields = new Field[9][9];
 
         JPanel pnlAlign = new JPanel();
         pnlAlign.setLayout(new BoxLayout(pnlAlign, BoxLayout.PAGE_AXIS));
         add(pnlAlign, BorderLayout.NORTH);
-        
+
         JPanel pnlTimer = new JPanel(new FlowLayout(FlowLayout.LEADING));
         pnlTimer.setBorder(BorderFactory.createTitledBorder(" Timer "));
         pnlAlign.add(pnlTimer);
+
+        labelTimer = new JLabel("Timer");
+        labelTimer.setText("00:00:00:000");
+        pnlTimer.add(labelTimer);
 
         JPanel pnlOptions = new JPanel(new FlowLayout(FlowLayout.LEADING));
         pnlOptions.setBorder(BorderFactory.createTitledBorder(" Options "));
@@ -100,10 +101,6 @@ public class ButtonPanel extends JPanel implements Observer {
         JPanel pnlNumbersHelp = new JPanel(new FlowLayout(FlowLayout.LEADING));
         pnlNumbers.add(pnlNumbersHelp);
 
-//        cbHelp = new JCheckBox("Hint", false);
-//        cbHelp.setFocusable(false);
-//        pnlNumbersHelp.add(cbHelp);
-
         cbHelp2 = new JButton("Hint");
         cbHelp2.setFocusable(false);
         pnlNumbersHelp.add(cbHelp2);
@@ -138,8 +135,6 @@ public class ButtonPanel extends JPanel implements Observer {
             case CANDIDATES:
                 setSteps((Game) o);
                 break;
-            case HELP2:
-                setSteps((Game) o);
         }
     }
 
@@ -152,7 +147,6 @@ public class ButtonPanel extends JPanel implements Observer {
         btnNew.addActionListener(buttonController);
         btnCheck.addActionListener(buttonController);
         btnExit.addActionListener(buttonController);
-//        cbHelp.addActionListener(buttonController);
         cbHelp2.addActionListener(buttonController);
         for (int i = 0; i < 9; i++) {
             btnNumbers[i].addActionListener(buttonController);
@@ -162,23 +156,52 @@ public class ButtonPanel extends JPanel implements Observer {
         }
     }
 
+    /**
+     * 
+     * @param game 
+     */
     public void setSteps(Game game) {
         labelSteps.setText("" + game.getSteps());
     }
-    
+
+    /**
+     * 
+     * @param game 
+     */
     public void setSteps2(Game game) {
         labelSteps.setText("" + game.getSteps2());
     }
-    
-//    public void addHint(Game game) {
-//        for (int y = 0; y < 9; y++) {
-//            for (int x = 0; x < 9; x++) {
-//                if (game.getNumber(x, y) == 0) {
-//                    System.out.println(game.getNumber(x, y));
-//                    fields[y][x].setNumber(game.getSolution()[y][x], true);
-//                    return;
-//                }
-//            }
-//        }
-//    }
+
+    /**
+     * 
+     * @param game 
+     */
+    public void resetSteps(Game game) {
+        game.setSteps(0);
+        game.setMilliseconds(0);
+        game.setSeconds(0);
+        game.setMinutes(0);
+        game.setHours(0);
+        labelSteps.setText("" + game.resetSteps());
+    }
+
+    /**
+     * 
+     * @param game 
+     */
+    public void setTimer(Game game) {
+        Thread time = new Thread() {
+            @Override
+            public void run() {
+                for (;;) {
+                    try {
+                        sleep(1);
+                        labelTimer.setText(game.getHours() + ":" + game.getMinutes() + ":" + game.getSeconds() + ":" + game.getMilliseconds());
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+        };
+        time.start();
+    }
 }

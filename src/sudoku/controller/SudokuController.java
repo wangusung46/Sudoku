@@ -17,9 +17,9 @@ import sudoku.view.SudokuPanel;
  * @author Eric Beijer
  */
 public class SudokuController implements MouseListener {
-    private SudokuPanel sudokuPanel;    // Panel to control.
-    private ButtonPanel buttonPanel;    // Panel to control.
-    private Game game;                  // Current Sudoku game.
+    private final SudokuPanel sudokuPanel;    // Panel to control.
+    private final ButtonPanel buttonPanel;    // Panel to control.
+    private final Game game;                  // Current Sudoku game.
 
     /**
      * Constructor, sets game.
@@ -66,8 +66,12 @@ public class SudokuController implements MouseListener {
         }
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) { }
+    @Override
     public void mouseEntered(MouseEvent e) { }
+    @Override
     public void mouseExited(MouseEvent e) { }
+    @Override
     public void mouseReleased(MouseEvent e) { }
 }

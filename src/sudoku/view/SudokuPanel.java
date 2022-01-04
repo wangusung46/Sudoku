@@ -57,7 +57,7 @@ public class SudokuPanel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         switch ((UpdateAction) arg) {
             case NEW_GAME:
-                setGame((Game) o);
+                resetGame((Game) o);
                 break;
             case CHECK:
                 setGameCheck((Game) o);
@@ -80,6 +80,16 @@ public class SudokuPanel extends JPanel implements Observer {
             for (int x = 0; x < 9; x++) {
                 fields[y][x].setBackground(Color.WHITE);
                 fields[y][x].setNumber(game.getNumber(x, y), false);
+            }
+        }
+    }
+    
+    public void resetGame(Game game) {
+        System.out.println("Resetttt");
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                fields[y][x].setBackground(Color.WHITE);
+                fields[y][x].setNumber(game.getNumberReset(x, y), false);
             }
         }
     }
@@ -109,9 +119,9 @@ public class SudokuPanel extends JPanel implements Observer {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 fields[y][x].setBackground(Color.WHITE);
-                if (game.isHelp() && game.isSelectedNumberCandidate(x, y)) {
-                    fields[y][x].setBackground(COLOR_CANDIDATE);
-                }
+//                if (game.isSelectedNumberCandidate(x, y)) {
+//                    fields[y][x].setBackground(COLOR_CANDIDATE);
+//                }
             }
         }
     }

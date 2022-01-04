@@ -13,6 +13,7 @@ import sudoku.model.Game;
  * @author Eric Beijer
  */
 public class Sudoku extends JFrame {
+
     public Sudoku() {
         super("Sudoku");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -23,11 +24,9 @@ public class Sudoku extends JFrame {
         ButtonPanel buttonPanel = new ButtonPanel();
 
         ButtonController buttonController = new ButtonController(sudokuPanel, buttonPanel, game);
-        
         buttonPanel.setController(buttonController);
         add(buttonPanel, BorderLayout.EAST);
 
-        
         SudokuController sudokuController = new SudokuController(sudokuPanel, buttonPanel, game);
         sudokuPanel.setGame(game);
         sudokuPanel.setController(sudokuController);
@@ -39,17 +38,21 @@ public class Sudoku extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        buttonPanel.setTimer(game);
     }
 
     /**
      * Main entry point of program.
-     * 
+     *
      * @param args Command line arguments.
      */
     public static void main(String[] args) {
         // Use System Look and Feel
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-        catch (Exception ex) { ex.printStackTrace(); }
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         new Sudoku();
     }
 }
