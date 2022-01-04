@@ -14,7 +14,7 @@ import sudoku.view.SudokuPanel;
 /**
  * This class controls all user actions from SudokuPanel.
  *
- * @author Eric Beijer
+ * @author Joshua 2021080138
  */
 public class SudokuController implements MouseListener {
     private final SudokuPanel sudokuPanel;    // Panel to control.
@@ -53,8 +53,9 @@ public class SudokuController implements MouseListener {
 
             if (e.getButton() == MouseEvent.BUTTON1 && (game.getNumber(x, y) == 0 || field.getForeground().equals(Color.BLUE))) {
                 int number = game.getSelectedNumber();
-                if (number == -1)
+                if (number == -1) {
                     return;
+                }
                 game.setNumber(x, y, number);
                 field.setNumber(number, true);
             } else if (e.getButton() == MouseEvent.BUTTON3 && !field.getForeground().equals(Color.BLACK)) {

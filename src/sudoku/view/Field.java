@@ -9,11 +9,13 @@ import javax.swing.JLabel;
 /**
  * This class represents a field on the SudokuPanel.
  *
- * @author Eric Beijer
+ * @author Joshua 2021080138
  */
 public class Field extends JLabel {
-    private int x;      // X position in game.
-    private int y;      // Y position in game.
+
+    private static final long serialVersionUID = 1L;
+    private final int x;      // X position in game.
+    private final int y;      // Y position in game.
 
     /**
      * Constructs the label and sets x and y positions in game.

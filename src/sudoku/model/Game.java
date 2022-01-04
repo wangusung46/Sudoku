@@ -10,7 +10,7 @@ import java.util.Observable;
  * input, the selected number and methods to check the validation of the user
  * input.
  *
- * @author Eric Beijer
+ * @author Joshua 2021080138
  */
 public class Game extends Observable {
 
@@ -24,6 +24,20 @@ public class Game extends Observable {
     private int seconds;
     private int minutes;
     private int hours;
+
+    /**
+     * Constructor
+     */
+    public Game() {
+        level = 70;
+        newGame();
+        submit = new boolean[9][9];
+        timer();
+        milliseconds = 0;
+        seconds = 0;
+        minutes = 0;
+        hours = 0;
+    }
 
     public boolean[][] getSubmit() {
         return submit;
@@ -67,20 +81,6 @@ public class Game extends Observable {
 
     public void setReset(int[][] reset) {
         this.reset = reset;
-    }
-
-    /**
-     * Constructor
-     */
-    public Game() {
-        level = 70;
-        newGame();
-        submit = new boolean[9][9];
-        timer();
-        milliseconds = 0;
-        seconds = 0;
-        minutes = 0;
-        hours = 0;
     }
 
     public int getLevel() {
@@ -171,7 +171,7 @@ public class Game extends Observable {
     }
 
     /**
-     * Sets selected number to user input.<br />
+     * Sets selected number to user input.
      * All observers will be notified, update action: selected number.
      *
      * @param selectedNumber Number selected by user.

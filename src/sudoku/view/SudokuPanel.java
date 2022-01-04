@@ -13,15 +13,16 @@ import sudoku.model.UpdateAction;
 /**
  * This class draws the sudoku panel and reacts to updates from the model.
  *
- * @author Eric Beijer
+ * @author Joshua 2021080138
  */
 public class SudokuPanel extends JPanel implements Observer {
 
     // Color constant for candidates.
     private static final Color COLOR_CANDIDATE = new Color(102, 153, 255);
+    private static final long serialVersionUID = 1L;
 
-    private Field[][] fields;       // Array of fields.
-    private JPanel[][] panels;      // Panels holding the fields.
+    private final Field[][] fields;       // Array of fields.
+    private final JPanel[][] panels;      // Panels holding the fields.
 
     /**
      * Constructs the panel, adds sub panels and adds fields to these sub
@@ -119,9 +120,9 @@ public class SudokuPanel extends JPanel implements Observer {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 fields[y][x].setBackground(Color.WHITE);
-//                if (game.isSelectedNumberCandidate(x, y)) {
-//                    fields[y][x].setBackground(COLOR_CANDIDATE);
-//                }
+                if (game.isSelectedNumberCandidate(x, y)) {
+                    fields[y][x].setBackground(COLOR_CANDIDATE);
+                }
             }
         }
     }

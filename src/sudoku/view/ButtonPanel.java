@@ -3,7 +3,6 @@ package sudoku.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import static java.lang.Thread.sleep;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
@@ -20,7 +19,7 @@ import sudoku.model.UpdateAction;
 /**
  * This class draws the button panel and reacts to updates from the model.
  *
- * @author Eric Beijer
+ * @author Joshua 2021080138
  */
 public class ButtonPanel extends JPanel implements Observer {
 

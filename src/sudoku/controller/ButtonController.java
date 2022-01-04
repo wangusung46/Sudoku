@@ -10,7 +10,7 @@ import sudoku.view.SudokuPanel;
 /**
  * This class controls all user actions from ButtonPanel.
  *
- * @author Eric Beijer
+ * @author Joshua 2021080138
  */
 public class ButtonController implements ActionListener {
 
@@ -37,6 +37,7 @@ public class ButtonController implements ActionListener {
      * @param e ActionEvent.
      */
     @Override
+    @SuppressWarnings("fallthrough")
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
         switch (e.getActionCommand()) {
