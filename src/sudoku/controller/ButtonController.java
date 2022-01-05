@@ -56,7 +56,7 @@ public class ButtonController implements ActionListener {
                         }
                     }
                 }
-                JOptionPane.showMessageDialog(null, "Congratulation your time " + (game.getHours() + ":"+game.getMinutes()+ ":" + game.getSeconds() + "(s)") + " and your steps " + (game.getSteps() - 1), "Level Complete", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Congratulation have completed this level", "Level Complete", JOptionPane.INFORMATION_MESSAGE);
                 game.newGame();
                 break;
             case "Exit":
